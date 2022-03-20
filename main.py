@@ -4,16 +4,19 @@ from program import Program
 import gui
 
 
+def main():
+    root = Tk()
+    gui.Window_Style(root, "Google App Reviews Visualizer", "538x538")
 
-root = Tk()
-gui.Window_Style(root, "Google App Reviews Visualizer", "538x538")
+    image = Image.open('logos/logo.jpg')
+    image.thumbnail((538, 538))
+    resized_image = ImageTk.PhotoImage(image)
+    img_label = Label(root, image=resized_image, bg=gui.Main_Theme_Color())
+    img_label.grid(row=0, column=0, rowspan=9, columnspan=3)
 
-image = Image.open('logos/logo.jpg')
-image.thumbnail((538, 538))
-resized_image = ImageTk.PhotoImage(image)
-img_label = Label(root, image=resized_image, bg=gui.Main_Theme_Color())
-img_label.grid(row=0, column=0, rowspan=9, columnspan=3)
+    Program(root)
 
-Program(root)
+    root.mainloop()
 
-root.mainloop()
+if __name__ == '__main__':
+    main()
