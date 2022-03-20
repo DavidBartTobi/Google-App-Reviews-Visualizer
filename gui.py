@@ -1,5 +1,5 @@
 
-def Center_Window(win):
+def center_window(win):
     win.update_idletasks()
 
     screen_width = win.winfo_screenwidth()
@@ -12,13 +12,13 @@ def Center_Window(win):
     return x, y
 
 
-def Window_Style(top, title, geometry):
+def window_style(top, title, geometry):
     top.title(title)
     top.geometry(geometry)
     top.resizable(width=False, height=False)
-    w, h = Center_Window(top)
+    w, h = center_window(top)
     top.geometry("+%d+%d" % (w, h-50))
 
 
-def Main_Theme_Color():
+def main_theme_color():
     return '#040404'
