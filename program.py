@@ -105,7 +105,7 @@ class Program:
         self.example_image = Image.open('logos/example.png')
         self.example_image.thumbnail((400, 300))
         self.resized_image = ImageTk.PhotoImage(self.example_image)
-        self.img_label = Label(self.example_frame, image=self.resized_image, bg=gui.Main_Theme_Color())
+        self.img_label = Label(self.example_frame, image=self.resized_image, bg=gui.main_theme_color())
         self.img_label.grid(row=4, column=0, rowspan=5, columnspan=3)
 
         self.app_name_entry.delete(0, "end")
