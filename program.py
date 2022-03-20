@@ -21,7 +21,7 @@ class Program:
 
         self.app_name_entry = Entry(self.root, justify='center', width=30, font=fontStyle)
 
-        self.choose_button = Button(self.root, text="Search", command=lambda: self.Scrape(),
+        self.choose_button = Button(self.root, text="Search", command=lambda: self.scrape(),
                                        width=21, cursor='hand2', font=fontStyle)
 
         self.explanation_label = Button(self.root, text="Search the app in Google Appstore and copy the id from the"
@@ -33,13 +33,13 @@ class Program:
 
         #secondary
 
-        self.stats_button = Button(self.root, text='Statistics', command=self.Statistics, width=21, cursor='hand2',
+        self.stats_button = Button(self.root, text='Statistics', command=self.statistics, width=21, cursor='hand2',
                                    font=fontStyle)
 
-        self.reviews_button = Button(self.root, text='Reviews', command=self.Review_Grid, width=21, cursor='hand2',
+        self.reviews_button = Button(self.root, text='Reviews', command=self.review_grid, width=21, cursor='hand2',
                                      font=fontStyle)
 
-        self.return_main_button = Button(self.root, text="❮ Back ", command=self.Return_Main, width=21, cursor='hand2',
+        self.return_main_button = Button(self.root, text="❮ Back ", command=self.return_main, width=21, cursor='hand2',
                                          font=fontStyle)
 
         #reviews
@@ -50,24 +50,24 @@ class Program:
 
         self.score_label = Label(self.root)
 
-        self.prev_review_button = Button(self.root, text='<', command= self.Prev_Review, width=10, cursor='hand2')
+        self.prev_review_button = Button(self.root, text='<', command= self.prev_review, width=10, cursor='hand2')
 
-        self.next_review_button = Button(self.root, text='>', command= self.Next_Review, width=10, cursor='hand2')
+        self.next_review_button = Button(self.root, text='>', command= self.next_review, width=10, cursor='hand2')
 
         self.review_page_entry = Entry(self.root, justify='center', width=5)
 
         self.review_page_entry.insert(0, 'No.')
 
-        self.find_review_button = Button(self.root, text='Find Review', command= self.Find_Review, width=12,
+        self.find_review_button = Button(self.root, text='Find Review', command= self.find_review, width=12,
                                          cursor='hand2', font=fontStyle)
 
-        self.return_secondary_button = Button(self.root, text="❮ Back ", command=self.Return_Secondary, width=21,
+        self.return_secondary_button = Button(self.root, text="❮ Back ", command=self.return_secondary, width=21,
                                               cursor='hand2', font=fontStyle)
 
-        self.Main_Grid()
+        self.main_grid()
 
 
-    def Scrape(self):
+    def scrape(self):
 
         self.app_id = self.app_name_entry.get()
 
@@ -89,14 +89,14 @@ class Program:
             if len(self.df) == 0:
                 raise TypeError
 
-            self.Hide_Main_Grid()
-            self.Secondary_Grid()
+            self.hide_main_grid()
+            self.secondary_grid()
 
         except:
             messagebox.showerror("Error", f"The app id provided does not exist.")
 
 
-    def Main_Grid(self):
+    def main_grid(self):
         self.app_name_entry.grid(row=0, column=0, rowspan=3, padx=(80,0), ipady=5.5, pady=(100,0))
         self.choose_button.grid(row=0, column=2, rowspan=3, padx=(0,80), pady=(101,0), ipady=3)
         self.explanation_label.grid(row=3, columnspan=3, ipadx=10, ipady=3)
@@ -110,26 +110,26 @@ class Program:
 
         self.app_name_entry.delete(0, "end")
         self.app_name_entry.insert(0, 'App Id')
-        self.app_name_entry.bind("<FocusIn>", self.Unbind_App_Entry)
-        self.root.bind('<Return>', lambda func: self.Scrape())
+        self.app_name_entry.bind("<FocusIn>", self.unbind_app_entry)
+        self.root.bind('<Return>', lambda func: self.scrape())
 
-    def Hide_Main_Grid(self):
+    def hide_main_grid(self):
         self.app_name_entry.grid_forget()
         self.choose_button.grid_forget()
         self.explanation_label.grid_forget()
         self.example_frame.grid_forget()
 
-    def Secondary_Grid(self):
+    def secondary_grid(self):
         self.stats_button.grid(row=0, column=0, rowspan=6, padx=(70,0), pady=(130,0), ipady=3)
         self.reviews_button.grid(row=0, column=2, rowspan=6, padx=(0,70), pady=(130,0), ipady=3)
         self.return_main_button.grid(row=6, column=0, columnspan=3, pady=(0,70), ipady=3)
 
-    def Hide_Secondary_Grid(self):
+    def hide_secondary_grid(self):
         self.stats_button.grid_forget()
         self.reviews_button.grid_forget()
         self.return_main_button.grid_forget()
 
-    def Review_Grid(self):
+    def review_grid(self):
         self.review_frame.grid(row=0, column=0, rowspan=2, columnspan=3, pady=(30,0))
         self.review_label.grid(row=0, column=0, rowspan=2, columnspan=3)
         self.score_label.grid(row=2, column=0, columnspan=3, pady=(0,40))
@@ -139,16 +139,16 @@ class Program:
         self.find_review_button.grid(row=4, column=2,columnspan=2, padx=(0,180), ipady=3)
         self.return_secondary_button.grid(row=5, column=0, columnspan=3, ipady=3)
 
-        self.Hide_Secondary_Grid()
-        self.Load_Rating()
+        self.hide_secondary_grid()
+        self.load_rating()
 
         self.review_label.configure(text=self.df.content[self.page])
-        self.root.bind('<Return>', lambda func: self.Find_Review())
-        self.review_page_entry.bind("<FocusIn>", self.Unbind_Review_Entry)
-        self.root.bind('<Left>', lambda func: self.Prev_Review())
-        self.root.bind('<Right>', lambda func: self.Next_Review())
+        self.root.bind('<Return>', lambda func: self.find_review())
+        self.review_page_entry.bind("<FocusIn>", self.unbind_review_entry)
+        self.root.bind('<Left>', lambda func: self.prev_review())
+        self.root.bind('<Right>', lambda func: self.next_review())
 
-    def Hide_Review_Grid(self):
+    def hide_review_grid(self):
         self.review_frame.grid_forget()
         self.review_label.grid_forget()
         self.prev_review_button.grid_forget()
@@ -158,7 +158,7 @@ class Program:
         self.return_secondary_button.grid_forget()
         self.score_label.grid_forget()
 
-    def Statistics(self):
+    def statistics(self):
 
         ratings = self.df
         ratings = ratings[ratings['score'].between(0, 5)]
@@ -177,32 +177,32 @@ class Program:
 
         plt.show()
 
-    def Next_Review(self):
+    def next_review(self):
 
         if self.page == len(self.df)-1:
             self.page = 0
         else:
             self.page +=1
 
-        self.Load_Rating()
+        self.load_rating()
         self.review_label.configure(text=self.df.content[self.page])
 
-    def Prev_Review(self):
+    def prev_review(self):
 
         if self.page == 0:
             self.page = len(self.df)-1
         else:
             self.page -=1
 
-        self.Load_Rating()
+        self.load_rating()
         self.review_label.configure(text=self.df.content[self.page])
 
-    def Find_Review(self):
+    def find_review(self):
 
         try:
             self.review_label.configure(text=self.df.content[int(self.review_page_entry.get())])
             self.page = int(self.review_page_entry.get())
-            self.Load_Rating()
+            self.load_rating()
             self.review_page_entry.delete(0, "end")
 
 
@@ -210,7 +210,7 @@ class Program:
             messagebox.showerror("Error", f"Please a number in the range 0 - {len(self.df)-1}")
             self.review_page_entry.focus_force()
 
-    def Load_Rating(self):
+    def load_rating(self):
 
         if self.df.score[self.page] == 1:
             self.image = Image.open('logos/Star_rating_1_of_5.png')
@@ -231,20 +231,21 @@ class Program:
         self.resized_image = ImageTk.PhotoImage(self.image)
         self.score_label.configure(image=self.resized_image)
 
-    def Return_Main(self):
-        self.Main_Grid()
-        self.Hide_Secondary_Grid()
+    def return_main(self):
+        self.main_grid()
+        self.hide_secondary_grid()
 
-    def Return_Secondary(self):
-        self.Secondary_Grid()
-        self.Hide_Review_Grid()
+    def return_secondary(self):
+        self.secondary_grid()
+        self.hide_review_grid()
 
-    def Unbind_App_Entry(self, event):
+    def unbind_app_entry(self, event):
         self.app_name_entry.delete(0, "end")
         self.app_name_entry.unbind("<FocusIn>")
         return None
 
-    def Unbind_Review_Entry(self, event):
+    def unbind_review_entry(self, event):
         self.review_page_entry.delete(0, "end")
         self.review_page_entry.unbind("<FocusIn>")
         return None
+    
